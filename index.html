@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HuílaMarket - Compra e Venda Segura na Huíla</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #D62828;
+            --secondary: #003049;
+            --accent: #F77F00;
+            --success: #06A77D;
+            --warning: #FCBF49;
+            --light: #EAE2B7;
+            --dark: #1a1a2e;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header {
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .logo::before {
+            content: "🏔️";
+            font-size: 2rem;
+        }
+
+        .location-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--white);
+            margin-left: 1rem;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 500;
+            transition: all 0.3s;
+            opacity: 0.9;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(247, 127, 0, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(247, 127, 0, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            color: var(--secondary);
+        }
+
+        .hero {
+            margin-top: 80px;
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: slideIn 0.8s ease-out;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+            animation: slideIn 0.8s ease-out 0.2s both;
+        }
+
+        .municipality-tags {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            animation: slideIn 0.8s ease-out 0.4s both;
+        }
+
+        .municipality-tag {
+            background: rgba(255,255,255,0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .municipality-tag:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .search-section {
+            max-width: 900px;
+            margin: -2rem auto 3rem;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-box {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            animation: slideIn 0.8s ease-out 0.6s both;
+            flex-wrap: wrap;
+        }
+
+        .search-input-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-input-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        .search-box input,
+        .search-box select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus,
+        .search-box select:focus {
+            border-color: var(--primary);
+        }
+
+        .search-btn {
+            align-self: flex-end;
+            padding: 0.8rem 2rem;
+        }
+
+        .stats-bar {
+            background: var(--white);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1400px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .companies-section {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .companies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .company-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .company-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: var(--accent);
+        }
+
+        .company-header {
+            height: 120px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            position: absolute;
+            bottom: -40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            border: 4px solid var(--white);
+        }
+
+        .verified-icon {
+            position: absolute;
+            bottom: -35px;
+            right: calc(50% - 50px);
+            background: var(--success);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            border: 2px solid white;
+        }
+
+        .company-body {
+            padding: 3rem 1.5rem 1.5rem;
+            text-align: center;
+        }
+
+        .company-name {
+            font-size: 1.3rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .company-location {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .company-specialty {
+            background: #f0f0f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--secondary);
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .company-products {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .product-tag {
+            background: var(--light);
+            color: var(--dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+        }
+
+        .company-footer {
+            padding: 1rem;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rating {
+            color: var(--warning);
+            font-size: 1rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        .security-section {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            margin: 4rem 0;
+            padding: 4rem 2rem;
+            color: var(--white);
+        }
+
+        .security-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .security-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+
+        .security-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .security-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .categories-section {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .category-item {
+            background: var(--white);
+            padding: 2rem 1rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .category-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-name {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease-out;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            background: #f0f0f0;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(214, 40, 40, 0.1);
+        }
+
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            z-index: 3000;
+            overflow-y: auto;
+        }
+
+        .admin-header {
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            padding: 2rem;
+            color: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .admin-stat-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .admin-stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-content {
+            padding: 2rem;
+            color: var(--white);
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab {
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .admin-tab.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            font-size: 0.9rem;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .admin-table th {
+            background: rgba(255,255,255,0.1);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-pending { background: var(--warning); color: var(--dark); }
+        .status-active { background: var(--success); color: var(--white); }
+        .status-escrow { background: var(--accent); color: var(--white); }
+        .status-blocked { background: var(--primary); color: var(--white); }
+
+        .close-admin {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .close-admin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(214, 40, 40, 0.4);
+        }
+
+        .footer {
+            background: var(--dark);
+            color: var(--white);
+            padding: 4rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            line-height: 1.8;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--dark);
+            color: var(--white);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: none;
+            animation: slideIn 0.3s ease-out;
+            z-index: 5000;
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error { border-left-color: var(--primary); }
+        .toast.warning { border-left-color: var(--warning); }
+
+        .license-badge {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 100;
+            border: 2px solid var(--success);
+        }
+
+        .license-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .license-text {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .license-text strong {
+            display: block;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .nav-links { display: none; }
+            .search-box { flex-direction: column; }
+            .search-btn { width: 100%; }
+            .municipality-tags { gap: 0.5rem; }
+            .municipality-tag { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
+            .license-badge { display: none; }
+            .admin-tabs { overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                HuílaMarket
+                <span class="location-badge">📍 Província da Huíla</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#inicio">Início</a>
+                <a href="#empresas">Empresas</a>
+                <a href="#categorias">Categorias</a>
+                <a href="#seguranca">Segurança</a>
+                <button class="btn btn-secondary" onclick="openModal('login')">Entrar</button>
+                <button class="btn btn-primary" onclick="openModal('registrar')">Registar Empresa</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h1>O Maior Marketplace da Huíla</h1>
+            <p>Conectamos compradores e vendedores verificados em toda a província. Da cidade do Lubango aos municípios mais distantes.</p>
+            
+            <div class="municipality-tags">
+                <span class="municipality-tag" onclick="filterMunicipality('Lubango')">🏔️ Lubango</span>
+                <span class="municipality-tag" onclick="filterMunicipality('Humpata')">🌄 Humpata</span>
+                <span class="municipality-tag" onclick="filterMunicipality('Chibia')">🌾 Chibia</span>
+                <span class="municipality-tag" onclick="filterMunicipality('Matala')">💧 Matala</span>
+                <span class="municipality-tag" onclick="filterMunicipality('Caluquembe')">⛰️ Caluquembe</span>
+                <span class="municipality-tag" onclick="filterMunicipality('Caconda')">🌳 Caconda</span>
+                <span class="municipality-tag" onclick="filterMunicipality('Quilengues')">🌻 Quilengues</span>
+                <span class="municipality-tag" onclick="filterMunicipality('Jamba')">⚒️ Jamba</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-box">
+            <div class="search-input-group" style="flex: 2;">
+                <label>O que procura?</label>
+                <input type="text" id="searchInput" placeholder="Ex: materiais construção, telemóveis, mobília...">
+            </div>
+            <div class="search-input-group">
+                <label>Município</label>
+                <select id="municipioSelect">
+                    <option value="">Todos os Municípios</option>
+                    <option value="Lubango">Lubango</option>
+                    <option value="Humpata">Humpata</option>
+                    <option value="Chibia">Chibia</option>
+                    <option value="Matala">Matala</option>
+                    <option value="Caluquembe">Caluquembe</option>
+                    <option value="Caconda">Caconda</option>
+                    <option value="Quilengues">Quilengues</option>
+                    <option value="Quipungo">Quipungo</option>
+                    <option value="Cacula">Cacula</option>
+                    <option value="Chicomba">Chicomba</option>
+                    <option value="Chipindo">Chipindo</option>
+                    <option value="Cuvango">Cuvango</option>
+                    <option value="Gambos">Gambos</option>
+                    <option value="Jamba">Jamba</option>
+                </select>
+            </div>
+            <div class="search-input-group">
+                <label>Categoria</label>
+                <select id="categorySelect">
+                    <option value="">Todas as Categorias</option>
+                    <option value="construcao">Construção</option>
+                    <option value="tecnologia">Tecnologia</option>
+                    <option value="mobiliario">Mobiliário</option>
+                    <option value="auto">Auto & Moto</option>
+                    <option value="agricola">Agrícola</option>
+                    <option value="vestuario">Vestuário</option>
+                    <option value="alimentacao">Alimentação</option>
+                </select>
+            </div>
+            <button class="btn btn-primary search-btn" onclick="searchProducts()">🔍 Buscar</button>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar">
+        <div class="stat-item">
+            <h3 id="statCompanies">24</h3>
+            <p>Empresas Verificadas</p>
+        </div>
+        <div class="stat-item">
+            <h3>14</h3>
+            <p>Municípios Cobertos</p>
+        </div>
+        <div class="stat-item">
+            <h3>1.247</h3>
+            <p>Transações Seguras</p>
+        </div>
+        <div class="stat-item">
+            <h3>0%</h3>
+            <p>Taxa de Fraude</p>
+        </div>
+    </section>
+
+    <!-- Featured Companies -->
+    <section class="companies-section" id="empresas">
+        <div class="section-header">
+            <h2>Empresas Verificadas na Huíla</h2>
+            <p>Comércios e empresas locais já cadastrados e verificados em toda a província</p>
+        </div>
+        
+        <div class="companies-grid" id="companiesGrid">
+            <!-- Empresas inseridas via JavaScript -->
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section class="security-section" id="seguranca">
+        <div class="security-content">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Sistema HuílaShield de Segurança</h2>
+                <p style="opacity: 0.9; font-size: 1.1rem;">Proteção máxima para compradores e vendedores em toda a província</p>
+            </div>
+            
+            <div class="security-grid">
+                <div class="security-card">
+                    <div class="security-icon">🔒</div>
+                    <h3>Pagamento em Escrow</h3>
+                    <p>O dinheiro fica retido na plataforma até a entrega ser confirmada. Zero risco para ambas as partes.</p>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">✓</div>
+                    <h3>Verificação KYC</h3>
+                    <p>Todas as empresas passam por verificação de documentos na Conservatória do Registo da Huíla.</p>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">🎥</div>
+                    <h3>Video Inspeção</h3>
+                    <p>Videochamada obrigatória para validação do produto antes do envio entre municípios.</p>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon">📋</div>
+                    <h3>Contrato Digital</h3>
+                    <p>Contrato automático com valor legal em Angola para cada transação realizada.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories-section" id="categorias">
+        <div class="section-header">
+            <h2>Categorias Populares</h2>
+            <p>Encontre o que precisa por sector de actividade</p>
+        </div>
+        
+        <div class="categories-grid">
+            <div class="category-item" onclick="filterCategory('construcao')">
+                <div class="category-icon">🏗️</div>
+                <div class="category-name">Construção</div>
+            </div>
+            <div class="category-item" onclick="filterCategory('tecnologia')">
+                <div class="category-icon">📱</div>
+                <div class="category-name">Tecnologia</div>
+            </div>
+            <div class="category-item" onclick="filterCategory('mobiliario')">
+                <div class="category-icon">🛋️</div>
+                <div class="category-name">Mobiliário</div>
+            </div>
+            <div class="category-item" onclick="filterCategory('auto')">
+                <div class="category-icon">🚗</div>
+                <div class="category-name">Auto & Moto</div>
+            </div>
+            <div class="category-item" onclick="filterCategory('agricola')">
+                <div class="category-icon">🌾</div>
+                <div class="category-name">Agrícola</div>
+            </div>
+            <div class="category-item" onclick="filterCategory('vestuario')">
+                <div class="category-icon">👔</div>
+                <div class="category-name">Vestuário</div>
+            </div>
+            <div class="category-item" onclick="filterCategory('alimentacao')">
+                <div class="category-icon">🍞</div>
+                <div class="category-name">Alimentação</div>
+            </div>
+            <div class="category-item" onclick="filterCategory('servicos')">
+                <div class="category-icon">🔧</div>
+                <div class="category-name">Serviços</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Sobre o HuílaMarket</h3>
+                <p>A primeira plataforma de e-commerce dedicada exclusivamente à província da Huíla. Ligamos o comércio local de Lubango aos municípios do interior.</p>
+                <br>
+                <p><strong>Sede:</strong> Lubango, Huíla, Angola</p>
+                <p><strong>Email:</strong> suporte@huilamarket.ao</p>
+            </div>
+            <div class="footer-section">
+                <h3>Municípios Atendidos</h3>
+                <a href="#" onclick="filterMunicipality('Lubango'); return false;">Lubango (Capital)</a>
+                <a href="#" onclick="filterMunicipality('Humpata'); return false;">Humpata</a>
+                <a href="#" onclick="filterMunicipality('Chibia'); return false;">Chibia</a>
+                <a href="#" onclick="filterMunicipality('Matala'); return false;">Matala</a>
+                <a href="#" onclick="filterMunicipality('Caluquembe'); return false;">Caluquembe</a>
+                <a href="#" onclick="filterMunicipality('Caconda'); return false;">Caconda & outros</a>
+            </div>
+            <div class="footer-section">
+                <h3>Links Úteis</h3>
+                <a href="#">Centro de Ajuda</a>
+                <a href="#">Termos de Uso</a>
+                <a href="#">Política de Privacidade</a>
+                <a href="#">Segurança</a>
+                <a href="#" onclick="openAdminLogin(); return false;">Painel Administrativo</a>
+            </div>
+            <div class="footer-section">
+                <h3>Empresas</h3>
+                <a href="#">Como registar-se</a>
+                <a href="#">Benefícios para empresas</a>
+                <a href="#">Taxas e comissões</a>
+                <a href="#">Suporte ao vendedor</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 HuílaMarket - Província da Huíla, Angola. Todos os direitos reservados.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">Licenciado pela Conservatória dos Registos da Huíla</p>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel">
+        <div class="admin-header">
+            <div class="admin-nav">
+                <div>
+                    <h2>🔐 Painel Administrativo - HuílaMarket</h2>
+                    <p style="opacity: 0.8; margin-top: 0.5rem;">Gestão da plataforma da Província da Huíla</p>
+                </div>
+                <button class="close-admin" onclick="closeAdminPanel()">Sair do Painel</button>
+            </div>
+            
+            <div class="admin-stats">
+                <div class="admin-stat-card">
+                    <div class="admin-stat-number" id="adminTotalCompanies">24</div>
+                    <div>Empresas Registadas</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-number" id="adminPendingVerifications">5</div>
+                    <div>Pendentes Verificação</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-number" id="adminActiveTransactions">12</div>
+                    <div>Transações em Escrow</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-number" id="adminTotalVolume">Kz 2.8M</div>
+                    <div>Volume Mensal</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="admin-content">
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchTab('companies', this)">Empresas</button>
+                <button class="admin-tab" onclick="switchTab('transactions', this)">Transações</button>
+                <button class="admin-tab" onclick="switchTab('verifications', this)">Verificações Pendentes</button>
+                <button class="admin-tab" onclick="switchTab('disputes', this)">Disputas</button>
+            </div>
+            
+            <div id="adminTableContainer">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Município</th>
+                            <th>Categoria</th>
+                            <th>Estado</th>
+                            <th>Transações</th>
+                            <th>Acções</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody">
+                        <!-- Dados inseridos via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- License Badge -->
+    <div class="license-badge">
+        <div class="license-icon">✓</div>
+        <div class="license-text">
+            <strong>Plataforma Licenciada</strong>
+            Conservatória dos Registos da Huíla
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Dados completos das empresas da Huíla
+        const companies = [
+            {
+                id: 1,
+                name: "Novo Prisma",
+                municipality: "Lubango",
+                category: "construcao",
+                specialty: "Materiais de Construção",
+                products: ["Cimento", "Tijolos", "Ferragens", "Cerâmicas"],
+                location: "Zona Industrial, Lubango",
+                verified: true,
+                rating: 4.8,
+                logo: "🏗️",
+                phone: "+244 261 234 567",
+                since: "2008",
+                nif: "541234567"
+            },
+            {
+                id: 2,
+                name: "Intercal",
+                municipality: "Lubango",
+                category: "construcao",
+                specialty: "Materiais Construção & Jardinagem",
+                products: ["Ferragens", "Ferramentas", "Jardinagem", "Agricultura"],
+                location: "Rua 5 de Outubro, Comercial",
+                verified: true,
+                rating: 4.9,
+                logo: "🛠️",
+                phone: "+244 261 223 456",
+                since: "1973",
+                nif: "540001234"
+            },
+            {
+                id: 3,
+                name: "Metalosul",
+                municipality: "Lubango",
+                category: "construcao",
+                specialty: "Estruturas Metálicas",
+                products: ["Estruturas", "Serralharia", "Carpintaria", "Telhados"],
+                location: "Zona Industrial, Lubango",
+                verified: true,
+                rating: 4.7,
+                logo: "⚙️",
+                phone: "+244 923 456 789",
+                since: "1995",
+                nif: "542345678"
+            },
+            {
+                id: 4,
+                name: "Socolil",
+                municipality: "Lubango",
+                category: "tecnologia",
+                specialty: "Electrodomésticos & Vestuário",
+                products: ["Telemóveis", "Computadores", "Roupas", "Calçados"],
+                location: "Centro Comercial, Lubango",
+                verified: true,
+                rating: 4.6,
+                logo: "📱",
+                phone: "+244 261 245 678",
+                since: "2005",
+                nif: "543456789"
+            },
+            {
+                id: 5,
+                name: "Golden Choice",
+                municipality: "Lubango",
+                category: "tecnologia",
+                specialty: "Tecnologia & Acessórios",
+                products: ["Smartphones", "Tablets", "Acessórios", "Reparações"],
+                location: "Centro Comercial Millenium, Lucrecia",
+                verified: true,
+                rating: 4.5,
+                logo: "💻",
+                phone: "+244 930 123 456",
+                since: "2015",
+                nif: "544567890"
+            },
+            {
+                id: 6,
+                name: "Fertiangola",
+                municipality: "Lubango",
+                category: "agricola",
+                specialty: "Fertilizantes & Sementes",
+                products: ["Fertilizantes", "Sementes", "Pesticidas", "Equipamentos"],
+                location: "Bairro Comercial, Rua Deolinda Rodrigues",
+                verified: true,
+                rating: 4.8,
+                logo: "🌾",
+                phone: "+244 947 863 750",
+                since: "2002",
+                nif: "545678901"
+            },
+            {
+                id: 7,
+                name: "Indi Conforto",
+                municipality: "Lubango",
+                category: "mobiliario",
+                specialty: "Mobiliário & Decoração",
+                products: ["Sofás", "Camas", "Mesas", "Cadeiras"],
+                location: "Avenida Deolinda Rodrigues",
+                verified: true,
+                rating: 4.4,
+                logo: "🛋️",
+                phone: "+244 923 765 432",
+                since: "2010",
+                nif: "546789012"
+            },
+            {
+                id: 8,
+                name: "Maxi (Teixeira Duarte)",
+                municipality: "Lubango",
+                category: "alimentacao",
+                specialty: "Supermercado & Padaria",
+                products: ["Alimentos", "Bebidas", "Padaria", "Charcutaria"],
+                location: "Avenida 4 de Fevereiro",
+                verified: true,
+                rating: 4.9,
+                logo: "🛒",
+                phone: "+244 261 212 345",
+                since: "2018",
+                nif: "547890123"
+            },
+            {
+                id: 9,
+                name: "Jedetel",
+                municipality: "Lubango",
+                category: "tecnologia",
+                specialty: "Telecomunicações",
+                products: ["Telemóveis", "Internet", "Redes", "Suporte"],
+                location: "Avenida Deolinda Rodrigues",
+                verified: true,
+                rating: 4.3,
+                logo: "📡",
+                phone: "+244 261 224 200",
+                since: "2000",
+                nif: "548901234"
+            },
+            {
+                id: 10,
+                name: "Peças Auto Lubango",
+                municipality: "Lubango",
+                category: "auto",
+                specialty: "Peças Automóveis",
+                products: ["Peças", "Acessórios", "Lubrificantes", "Pneus"],
+                location: "Avenida Deolinda Rodrigues, Comercial",
+                verified: true,
+                rating: 4.6,
+                logo: "🔧",
+                phone: "+244 923 987 654",
+                since: "2005",
+                nif: "549012345"
+            },
+            {
+                id: 11,
+                name: "Cerveja N'Gola",
+                municipality: "Lubango",
+                category: "alimentacao",
+                specialty: "Bebidas & Distribuição",
+                products: ["Cervejas", "Refrigerantes", "Águas", "Bebidas"],
+                location: "Rua de Mapunda, CP 1233",
+                verified: true,
+                rating: 4.7,
+                logo: "🍺",
+                phone: "+244 261 234 890",
+                since: "1990",
+                nif: "540123456"
+            },
+            {
+                id: 12,
+                name: "Tanganet",
+                municipality: "Lubango",
+                category: "construcao",
+                specialty: "Materiais Construção",
+                products: ["Tubos", "Cimentos", "Ferragens", "Telhas"],
+                location: "Rua 1º de Agosto",
+                verified: true,
+                rating: 4.5,
+                logo: "🏭",
+                phone: "+244 925 141 414",
+                since: "2012",
+                nif: "541234568"
+            },
+            {
+                id: 13,
+                name: "Brachegues",
+                municipality: "Lubango",
+                category: "tecnologia",
+                specialty: "Telemóveis & Acessórios",
+                products: ["Smartphones", "Capas", "Carregadores", "Fones"],
+                location: "Avenida Deolinda Rodrigues",
+                verified: true,
+                rating: 4.2,
+                logo: "📲",
+                phone: "+244 930 456 789",
+                since: "2016",
+                nif: "542345679"
+            },
+            {
+                id: 14,
+                name: "Traço Africano",
+                municipality: "Lubango",
+                category: "vestuario",
+                specialty: "Alfaiataria & Moda",
+                products: ["Fatos", "Trajes", "Vestidos", "Reparações"],
+                location: "Avenida Deolinda Rodrigues",
+                verified: true,
+                rating: 4.8,
+                logo: "👔",
+                phone: "+244 923 234 567",
+                since: "2003",
+                nif: "543456780"
+            },
+            {
+                id: 15,
+                name: "Pastelaria Doce Segredo",
+                municipality: "Lubango",
+                category: "alimentacao",
+                specialty: "Pastelaria & Confeitaria",
+                products: ["Bolos", "Pastéis", "Pães", "Doces"],
+                location: "Avenida Deolinda Rodrigues",
+                verified: true,
+                rating: 4.9,
+                logo: "🧁",
+                phone: "+244 261 245 123",
+                since: "2008",
+                nif: "544567891"
+            },
+            {
+                id: 16,
+                name: "Afrovisão",
+                municipality: "Lubango",
+                category: "tecnologia",
+                specialty: "Electricidade & Electrónica",
+                products: ["Electrodomésticos", "Instalações", "Reparações"],
+                location: "Avenida Deolinda Rodrigues",
+                verified: true,
+                rating: 4.4,
+                logo: "⚡",
+                phone: "+244 923 876 543",
+                since: "2006",
+                nif: "545678902"
+            },
+            {
+                id: 17,
+                name: "Amako 2",
+                municipality: "Lubango",
+                category: "alimentacao",
+                specialty: "Supermercado",
+                products: ["Alimentos", "Bebidas", "Produtos Locais"],
+                location: "Avenida Comandante Hoji-ya-Henda",
+                verified: true,
+                rating: 4.3,
+                logo: "🏪",
+                phone: "+244 261 267 890",
+                since: "2014",
+                nif: "546789013"
+            },
+            {
+                id: 18,
+                name: "Fefinha Cosméticos",
+                municipality: "Lubango",
+                category: "vestuario",
+                specialty: "Cosméticos & Beleza",
+                products: ["Maquilhagem", "Cremes", "Perfumes", "Acessórios"],
+                location: "Rua 5 de Outubro, Comercial",
+                verified: true,
+                rating: 4.6,
+                logo: "💄",
+                phone: "+244 930 765 432",
+                since: "2011",
+                nif: "547890124"
+            },
+            {
+                id: 19,
+                name: "Materiais Chibia",
+                municipality: "Chibia",
+                category: "construcao",
+                specialty: "Materiais de Construção",
+                products: ["Cimento", "Tijolos", "Areia", "Pedra"],
+                location: "Centro de Chibia",
+                verified: true,
+                rating: 4.5,
+                logo: "🧱",
+                phone: "+244 923 345 678",
+                since: "2015",
+                nif: "548901235"
+            },
+            {
+                id: 20,
+                name: "Agropecuária Humpata",
+                municipality: "Humpata",
+                category: "agricola",
+                specialty: "Produtos Agrícolas & Gado",
+                products: ["Gado", "Produtos Hortícolas", "Sementes"],
+                location: "Humpata Centro",
+                verified: true,
+                rating: 4.7,
+                logo: "🐄",
+                phone: "+244 923 456 123",
+                since: "2009",
+                nif: "549012346"
+            },
+            {
+                id: 21,
+                name: "Auto Matala",
+                municipality: "Matala",
+                category: "auto",
+                specialty: "Oficina & Peças",
+                products: ["Reparações", "Peças", "Serviços"],
+                location: "Estrada Principal, Matala",
+                verified: true,
+                rating: 4.4,
+                logo: "🚙",
+                phone: "+244 923 567 890",
+                since: "2013",
+                nif: "540123457"
+            },
+            {
+                id: 22,
+                name: "Cereais Caluquembe",
+                municipality: "Caluquembe",
+                category: "agricola",
+                specialty: "Compra & Venda de Cereais",
+                products: ["Milho", "Feijão", "Amendoim", "Batata"],
+                location: "Mercado Municipal, Caluquembe",
+                verified: true,
+                rating: 4.6,
+                logo: "🌽",
+                phone: "+244 923 678 901",
+                since: "2007",
+                nif: "541234569"
+            },
+            {
+                id: 23,
+                name: "Tecno Moda Lubango",
+                municipality: "Lubango",
+                category: "vestuario",
+                specialty: "Roupas & Calçados",
+                products: ["Roupas", "Calçados", "Acessórios"],
+                location: "Avenida Comandante Hoji-ya-Henda",
+                verified: true,
+                rating: 4.3,
+                logo: "👗",
+                phone: "+244 930 234 567",
+                since: "2017",
+                nif: "542345670"
+            },
+            {
+                id: 24,
+                name: "Peixaria Friangol",
+                municipality: "Lubango",
+                category: "alimentacao",
+                specialty: "Peixe & Frutos do Mar",
+                products: ["Peixe Fresco", "Congelados", "Mariscos"],
+                location: "Avenida Deolinda Rodrigues",
+                verified: true,
+                rating: 4.5,
+                logo: "🐟",
+                phone: "+244 923 789 012",
+                since: "2004",
+                nif: "543456781"
+            }
+        ];
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCompanies(companies);
+            updateStats();
+        });
+
+        // Renderizar empresas
+        function renderCompanies(companiesList) {
+            const grid = document.getElementById('companiesGrid');
+            if (companiesList.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666;"><h3>Nenhuma empresa encontrada</h3><p>Tente ajustar os filtros de pesquisa.</p></div>';
+                return;
+            }
+            
+            grid.innerHTML = companiesList.map(company => `
+                <div class="company-card" onclick="viewCompany(${company.id})">
+                    <div class="company-header">
+                        <div class="company-logo">${company.logo}</div>
+                        ${company.verified ? '<div class="verified-icon">✓</div>' : ''}
+                    </div>
+                    <div class="company-body">
+                        <h3 class="company-name">${company.name}</h3>
+                        <div class="company-location">📍 ${company.location}</div>
+                        <div class="company-specialty">${company.specialty}</div>
+                        <div class="company-products">
+                            ${company.products.slice(0, 3).map(p => `<span class="product-tag">${p}</span>`).join('')}
+                        </div>
+                        <div style="color: #666; font-size: 0.85rem; margin-top: 0.5rem;">
+                            Desde ${company.since} • ${company.phone}
+                        </div>
+                    </div>
+                    <div class="company-footer">
+                        <div class="rating">${'★'.repeat(Math.floor(company.rating))} ${company.rating}</div>
+                        <button class="btn btn-primary btn-small">Ver Loja</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Actualizar estatísticas
+        function updateStats() {
+            document.getElementById('statCompanies').textContent = companies.length;
+        }
+
+        // Filtrar por município
+        function filterMunicipality(municipality) {
+            const filtered = companies.filter(c => c.municipality === municipality);
+            renderCompanies(filtered);
+            showToast(`${municipality}: ${filtered.length} empresas encontradas`, 'success');
+            document.getElementById('empresas').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Filtrar por categoria
+        function filterCategory(category) {
+            const filtered = companies.filter(c => c.category === category);
+            renderCompanies(filtered);
+            const categoryNames = {
+                'construcao': 'Construção',
+                'tecnologia': 'Tecnologia',
+                'mobiliario': 'Mobiliário',
+                'auto': 'Auto & Moto',
+                'agricola': 'Agrícola',
+                'vestuario': 'Vestuário',
+                'alimentacao': 'Alimentação',
+                'servicos': 'Serviços'
+            };
+            showToast(`${categoryNames[category]}: ${filtered.length} empresas`, 'success');
+            document.getElementById('empresas').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Buscar produtos
+        function searchProducts() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const municipality = document.getElementById('municipioSelect').value;
+            const category = document.getElementById('categorySelect').value;
+            
+            let filtered = companies.filter(c => {
+                const matchTerm = !term || 
+                                c.name.toLowerCase().includes(term) || 
+                                c.products.some(p => p.toLowerCase().includes(term)) ||
+                                c.specialty.toLowerCase().includes(term);
+                const matchMunicipality = !municipality || c.municipality === municipality;
+                const matchCategory = !category || c.category === category;
+                
+                return matchTerm && matchMunicipality && matchCategory;
+            });
+            
+            renderCompanies(filtered);
+            showToast(`${filtered.length} empresas encontradas`, filtered.length > 0 ? 'success' : 'warning');
+            if (filtered.length > 0) {
+                document.getElementById('empresas').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Modal functions
+        function openModal(type) {
+            const modal = document.getElementById('modal');
+            const body = document.getElementById('modalBody');
+            
+            if (type === 'login') {
+                body.innerHTML = `
+                    <h2>Entrar na sua Conta</h2>
+                    <form onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label>Email ou NIF</label>
+                            <input type="text" required placeholder="empresa@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Palavra-passe</label>
+                            <input type="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de Conta</label>
+                            <select required>
+                                <option value="">Selecione...</option>
+                                <option value="empresa">Empresa/Empreendedor</option>
+                                <option value="particular">Comprador Particular</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
+                    </form>
+                    <p style="text-align: center; margin-top: 1rem; color: #666;">
+                        Esqueceu a palavra-passe? <a href="#" style="color: var(--primary);">Recuperar</a>
+                    </p>
+                `;
+            } else if (type === 'registrar') {
+                body.innerHTML = `
+                    <h2>Registar Empresa</h2>
+                    <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.9rem;">Junte-se às empresas verificadas da Huíla</p>
+                    <form onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label>Nome da Empresa *</label>
+                            <input type="text" required placeholder="Ex: Novo Prisma">
+                        </div>
+                        <div class="form-group">
+                            <label>NIF *</label>
+                            <input type="text" required placeholder="Número de Identificação Fiscal">
+                        </div>
+                        <div class="form-group">
+                            <label>Município *</label>
+                            <select required>
+                                <option value="">Selecione...</option>
+                                <option value="Lubango">Lubango</option>
+                                <option value="Humpata">Humpata</option>
+                                <option value="Chibia">Chibia</option>
+                                <option value="Matala">Matala</option>
+                                <option value="Caluquembe">Caluquembe</option>
+                                <option value="Caconda">Caconda</option>
+                                <option value="Outro">Outro...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Categoria Principal *</label>
+                            <select required>
+                                <option value="">Selecione...</option>
+                                <option value="construcao">Construção</option>
+                                <option value="tecnologia">Tecnologia</option>
+                                <option value="mobiliario">Mobiliário</option>
+                                <option value="auto">Auto & Moto</option>
+                                <option value="agricola">Agrícola</option>
+                                <option value="vestuario">Vestuário</option>
+                                <option value="alimentacao">Alimentação</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone *</label>
+                            <input type="tel" required placeholder="+244 9XX XXX XXX">
+                        </div>
+                        <div class="form-group">
+                            <label>Documentos (NIF, Registo Comercial)</label>
+                            <input type="file" multiple accept=".pdf,.jpg,.png">
+                            <small style="color: #666;">PDF ou imagens (máx. 5MB)</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Submeter para Verificação</button>
+                    </form>
+                    <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.85rem;">
+                        A verificação pode levar até 48 horas úteis.
+                    </p>
+                `;
+            }
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Handlers
+        function handleLogin(e) {
+            e.preventDefault();
+            closeModal();
+            showToast('Login realizado com sucesso!', 'success');
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            closeModal();
+            showToast('Registo submetido! Verificação em andamento.', 'success');
+        }
+
+        function viewCompany(id) {
+            const company = companies.find(c => c.id === id);
+            showToast(`A abrir loja: ${company.name}`, 'success');
+        }
+
+        // Admin Panel
+        function openAdminLogin() {
+            const password = prompt("Digite a senha de administrador:");
+            if (password === "huila2024") {
+                document.getElementById('adminPanel').style.display = 'block';
+                renderAdminTable();
+                showToast('Bem-vindo ao Painel Administrativo da Huíla', 'success');
+            } else {
+                showToast('Acesso negado!', 'error');
+            }
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+
+        function renderAdminTable() {
+            const tbody = document.getElementById('adminTableBody');
+            tbody.innerHTML = companies.map(c => `
+                <tr>
+                    <td>
+                        <strong>${c.name}</strong><br>
+                        <small style="opacity: 0.7;">NIF: ${c.nif}</small>
+                    </td>
+                    <td>${c.municipality}</td>
+                    <td>${c.specialty}</td>
+                    <td><span class="status-badge status-active">✓ Verificado</span></td>
+                    <td>${Math.floor(Math.random() * 50)}</td>
+                    <td>
+                        <button class="btn btn-primary btn-small" onclick="showToast('A editar ${c.name}', 'success')">Editar</button>
+                        <button class="btn btn-secondary btn-small" style="margin-left: 0.5rem; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="showToast('A bloquear ${c.name}', 'warning')">Bloquear</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function switchTab(tab, element) {
+            // Remover active de todas as tabs
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            // Adicionar active à tab clicada
+            element.classList.add('active');
+            
+            // Atualizar conteúdo baseado na tab
+            const container = document.getElementById('adminTableContainer');
+            
+            if (tab === 'companies') {
+                container.innerHTML = `
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Empresa</th>
+                                <th>Município</th>
+                                <th>Categoria</th>
+                                <th>Estado</th>
+                                <th>Transações</th>
+                                <th>Acções</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody"></tbody>
+                    </table>
+                `;
+                renderAdminTable();
+            } else if (tab === 'transactions') {
+                container.innerHTML = `
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Comprador</th>
+                                <th>Vendedor</th>
+                                <th>Valor</th>
+                                <th>Estado</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#TX-001</td>
+                                <td>João Silva</td>
+                                <td>Novo Prisma</td>
+                                <td>Kz 45.000</td>
+                                <td><span class="status-badge status-escrow">Em Escrow</span></td>
+                                <td>12/03/2024</td>
+                            </tr>
+                            <tr>
+                                <td>#TX-002</td>
+                                <td>Maria Santos</td>
+                                <td>Intercal</td>
+                                <td>Kz 128.000</td>
+                                <td><span class="status-badge status-completed">Concluído</span></td>
+                                <td>11/03/2024</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+            } else if (tab === 'verifications') {
+                container.innerHTML = `
+                    <div style="padding: 2rem; text-align: center; color: rgba(255,255,255,0.7);">
+                        <h3>5 Empresas Pendentes</h3>
+                        <p>Novos registos aguardando verificação de documentos.</p>
+                    </div>
+                `;
+            } else if (tab === 'disputes') {
+                container.innerHTML = `
+                    <div style="padding: 2rem; text-align: center; color: rgba(255,255,255,0.7);">
+                        <h3>0 Disputas Activas</h3>
+                        <p>Não há disputas pendentes no momento.</p>
+                    </div>
+                `;
+            }
+            
+            showToast(`Secção: ${tab}`, 'success');
+        }
+
+        // Toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.style.display = 'block';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        // Fechar modal ao clicar fora
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Adicionar event listeners para inputs de pesquisa
+        document.getElementById('searchInput')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchProducts();
+            }
+        });
+    </script>
+</body>
+</html>
